@@ -26,10 +26,33 @@
             android:layout_height="match_parent"
             android:id="@+id/fill">
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="現在進行中のタスクn個"
+                    android:id="@+id/taskNumTextView"
+                    android:gravity="center_vertical"
+                    android:layout_weight="7"
+                    android:singleLine="false" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="タスク追加"
+                    android:id="@+id/appendtaskButton"
+                    android:layout_weight="2" />
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="10"
+                android:layout_weight="8"
                 android:id="@+id/dekoi2">
 
             </RelativeLayout>
@@ -45,7 +68,16 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageView"
+                    android:id="@+id/pointerImageView1"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/pointerImageView2"
                     android:src="@drawable/pointer"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -55,7 +87,22 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageView2"
+                    android:id="@+id/pointerImageView3"
+                    android:src="@drawable/pointer"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"></RelativeLayout>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/pointerImageView4"
                     android:src="@drawable/pointer"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -65,7 +112,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageView3"
+                    android:id="@+id/pointerImageView5"
                     android:src="@drawable/pointer"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -75,7 +122,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageView4"
+                    android:id="@+id/pointerImageView6"
                     android:src="@drawable/pointer"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -85,7 +132,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageView5"
+                    android:id="@+id/pointerImageView7"
                     android:src="@drawable/pointer"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -95,27 +142,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageView6"
-                    android:src="@drawable/pointer"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/imageView7"
-                    android:src="@drawable/pointer"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/imageView8"
+                    android:id="@+id/pointerImageView8"
                     android:src="@drawable/pointer"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -127,7 +154,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.3"
+                android:layout_weight="1.5"
                 android:id="@+id/dekoi3"></RelativeLayout>
 
         </LinearLayout>
