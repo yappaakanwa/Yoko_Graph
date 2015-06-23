@@ -35,18 +35,27 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="現在進行中のタスクn個"
-                    android:id="@+id/taskNumTextView"
+                    android:text="現在進行中のタスク"
+                    android:id="@+id/taskTextView"
                     android:gravity="center_vertical"
-                    android:layout_weight="7"
+                    android:layout_weight="4"
                     android:singleLine="false" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="0"
+                    android:id="@+id/taskNumTextView"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical" />
 
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:text="タスク追加"
-                    android:id="@+id/appendtaskButton"
-                    android:layout_weight="2" />
+                    android:id="@+id/button"
+                    android:layout_weight="2"
+                    android:onClick="appendTask" />
             </LinearLayout>
 
             <RelativeLayout
@@ -97,7 +106,8 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"></RelativeLayout>
+                    android:layout_weight="0.2"
+                    android:id="@+id/dekoi1"></RelativeLayout>
 
                 <ImageView
                     android:layout_width="0dp"
