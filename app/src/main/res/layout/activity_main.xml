@@ -50,12 +50,11 @@
                     android:gravity="center_vertical" />
 
                 <Button
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="タスク追加"
-                    android:id="@+id/button"
-                    android:layout_weight="2"
-                    android:onClick="appendTask" />
+                    android:text="タスク\n追加"
+                    android:id="@+id/appendButton"
+                    android:onClick="onClick" />
             </LinearLayout>
 
             <RelativeLayout
@@ -64,6 +63,14 @@
                 android:layout_weight="8"
                 android:id="@+id/dekoi2">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/Test"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="40dp" />
             </RelativeLayout>
 
             <LinearLayout

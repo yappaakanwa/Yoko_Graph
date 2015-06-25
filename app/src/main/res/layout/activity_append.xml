@@ -49,14 +49,32 @@
             android:id="@+id/memoEditText"
             android:layout_weight="1" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="追加！"
-            android:id="@+id/appendButton"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:onClick="onClick" />
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="追加！"
+                android:id="@+id/appendButton"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="キャンセル"
+                android:id="@+id/cancelButton"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:onClick="onClick" />
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

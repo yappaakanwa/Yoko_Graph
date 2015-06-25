@@ -1,6 +1,7 @@
 package com.example.madao3.yoko_graph;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.DatePicker;
-import android.widget.Toast;
+
 
 
 public class appendActivity extends ActionBarActivity {
@@ -17,17 +18,15 @@ public class appendActivity extends ActionBarActivity {
     private SharedPreferences n_sp;
     private SharedPreferences d_sp;
     private SharedPreferences m_sp;
-    private SharedPreferences num_editor;
-    private SharedPreferences.Editor n_editor;
-    private SharedPreferences.Editor d_editor;
-    private SharedPreferences.Editor m_editor;
-
-    private EditText tasknameEditText;
-    private EditText memoEditText;
+    private Editor num_editor;
+    private Editor n_editor;
+    private Editor d_editor;
+    private Editor m_editor;
 
     private int year;
     private int month;
     private int dateofmonth;
+    private int tasknum;
     private String date;
     private String name;
     private String memo;
@@ -41,13 +40,14 @@ public class appendActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_append);
         inputDate = (DatePicker) findViewById(R.id.inputdatePicker);
-        EditText tasknameEditText = (EditText) findViewById(R.id.taskNameEditText);
-        EditText memoEditText = (EditText) findViewById(R.id.memoEditText);
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
         switch (v.getId()){
             case R.id.appendButton:
+                final EditText tasknameEditText = (EditText) findViewById(R.id.taskNameEditText);
+                final EditText memoEditText = (EditText) findViewById(R.id.memoEditText);
+
                 year = inputDate.getYear();
                 month = inputDate.getMonth() + 1;
                 if(month == 13){
@@ -57,12 +57,19 @@ public class appendActivity extends ActionBarActivity {
                 dateofmonth = inputDate.getDayOfMonth();
                 date = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(dateofmonth);
                 name = tasknameEditText.getText().toString();
-                memo = memoEditText.getText().toString();
+                memo = memoEditText.getText().toString().toString();
+                writeTasks();
+                finish();
+                break;
+            case R.id.cancelButton:
+                finish();
                 break;
         }
     }
 
     public void writeTasks(){
+        num = getSharedPreferences("num", MODE_PRIVATE);
+        num_editor = num.edit();
         n_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
         d_sp = getSharedPreferences("d_savedate", MODE_PRIVATE);
         m_sp = getSharedPreferences("m_savedate", MODE_PRIVATE);
@@ -70,7 +77,17 @@ public class appendActivity extends ActionBarActivity {
         d_editor = d_sp.edit();
         m_editor = m_sp.edit();
 
+        tasknum = num.getInt("tasknum", -1);
+        tasknum++;
+        num_editor.putInt("tasknum", tasknum);
+        num_editor.commit();
 
+        n_editor.putString(String.valueOf(tasknum), name);
+        d_editor.putString(name, date);
+        m_editor.putString(name, memo);
+        n_editor.commit();
+        d_editor.commit();
+        m_editor.commit();
     }
 
     @Override
