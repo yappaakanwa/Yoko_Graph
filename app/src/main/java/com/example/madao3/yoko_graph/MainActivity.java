@@ -71,8 +71,8 @@ public class MainActivity extends ActionBarActivity {
         num = getSharedPreferences("num", MODE_PRIVATE);
         num_editor = num.edit();
         n_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
-        d_sp = getSharedPreferences("d_savedate", MODE_PRIVATE);
-        m_sp = getSharedPreferences("m_savedate", MODE_PRIVATE);
+        d_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
+        m_sp = getSharedPreferences("m_savedata", MODE_PRIVATE);
         deadline_sp = getSharedPreferences("deadline", MODE_PRIVATE);
         n_editor = n_sp.edit();
         d_editor = d_sp.edit();
@@ -100,14 +100,55 @@ public class MainActivity extends ActionBarActivity {
 
         tasknum = num.getInt("tasknum", -1);
         tasknumTextView.setText(String.valueOf(tasknum));
+        try {
+            setDeadline();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         visiblePointer();
     }
 
     public void onClick(View v) {
+        Intent intent2 = new Intent(this, infActivity.class);
         switch (v.getId()) {
             case R.id.appendButton:
                 Intent intent = new Intent(this, appendActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.pointerImageView2:
+                test.setText("pointer2 clicked");
+                intent2.putExtra("pointerNum", 2);
+                startActivity(intent2);
+                break;
+            case R.id.pointerImageView3:
+                test.setText("pointer3 clicked");
+                intent2.putExtra("pointerNum", 3);
+                startActivity(intent2);
+                break;
+            case R.id.pointerImageView4:
+                test.setText("pointer4 clicked");
+                intent2.putExtra("pointerNum", 4);
+                startActivity(intent2);
+                break;
+            case R.id.pointerImageView5:
+                test.setText("pointer5 clicked");
+                intent2.putExtra("pointerNum", 5);
+                startActivity(intent2);
+                break;
+            case R.id.pointerImageView6:
+                test.setText("pointer6 clicked");
+                intent2.putExtra("pointerNum", 6);
+                startActivity(intent2);
+                break;
+            case R.id.pointerImageView7:
+                test.setText("pointer7 clicked");
+                intent2.putExtra("pointerNum", 7);
+                startActivity(intent2);
+                break;
+            case R.id.pointerImageView8:
+                test.setText("pointer8 clicked");
+                intent2.putExtra("pointerNum", 8);
+                startActivity(intent2);
                 break;
         }
     }

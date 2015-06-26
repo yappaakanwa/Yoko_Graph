@@ -88,7 +88,8 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="0.7" />
+                    android:layout_weight="0.7"
+                    android:clickable="false" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -98,7 +99,9 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -108,7 +111,9 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -124,7 +129,9 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -134,7 +141,9 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -144,7 +153,9 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -154,7 +165,9 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -164,7 +177,9 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
             </LinearLayout>
 

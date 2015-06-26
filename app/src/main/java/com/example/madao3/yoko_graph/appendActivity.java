@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.DatePicker;
-
+import android.widget.Toast;
 
 
 public class appendActivity extends ActionBarActivity {
@@ -46,7 +46,9 @@ public class appendActivity extends ActionBarActivity {
         switch (v.getId()){
             case R.id.appendButton:
                 final EditText tasknameEditText = (EditText) findViewById(R.id.taskNameEditText);
-                final EditText memoEditText = (EditText) findViewById(R.id.memoEditText);
+                //final EditText memoEditText = (EditText) findViewById(R.id.memoEditText);
+
+                d_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
 
                 year = inputDate.getYear();
                 month = inputDate.getMonth() + 1;
@@ -57,10 +59,15 @@ public class appendActivity extends ActionBarActivity {
                 dateofmonth = inputDate.getDayOfMonth();
                 date = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(dateofmonth);
                 name = tasknameEditText.getText().toString();
-                memo = memoEditText.getText().toString().toString();
-                writeTasks();
-                finish();
-                break;
+                //memo = memoEditText.getText().toString().toString();
+                memo = "test";
+                if(d_sp.getString(name,"already") == "already") {
+                    writeTasks();
+                    finish();
+                }else{
+                    Toast.makeText(this, "既に登録されているタスクです",Toast.LENGTH_SHORT).show();
+                }
+                    break;
             case R.id.cancelButton:
                 finish();
                 break;
@@ -71,8 +78,8 @@ public class appendActivity extends ActionBarActivity {
         num = getSharedPreferences("num", MODE_PRIVATE);
         num_editor = num.edit();
         n_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
-        d_sp = getSharedPreferences("d_savedate", MODE_PRIVATE);
-        m_sp = getSharedPreferences("m_savedate", MODE_PRIVATE);
+        d_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
+        m_sp = getSharedPreferences("m_savedata", MODE_PRIVATE);
         n_editor = n_sp.edit();
         d_editor = d_sp.edit();
         m_editor = m_sp.edit();

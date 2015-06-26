@@ -20,6 +20,14 @@
             android:name=".appendActivity"
             android:label="@string/title_activity_append" >
         </activity>
+        <activity
+            android:name=".infActivity"
+            android:label="@string/title_activity_inf" >
+        </activity>
+        <activity
+            android:name=".propertyActivity"
+            android:label="@string/title_activity_property" >
+        </activity>
     </application>
 
 </manifest>
