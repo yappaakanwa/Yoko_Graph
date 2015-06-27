@@ -39,13 +39,11 @@ public class MainActivity extends ActionBarActivity {
     private SharedPreferences num;
     private SharedPreferences n_sp;
     private SharedPreferences d_sp;
-    private SharedPreferences m_sp;
     private SharedPreferences deadline_sp;
     private SharedPreferences checkDefault;
     private Editor num_editor;
     private Editor n_editor;
     private Editor d_editor;
-    private Editor m_editor;
     private Editor dl_editor;
     private Editor cd_ediror;
 
@@ -56,6 +54,17 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        defineAll();
+
+        try {
+            setDeadline();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        visiblePointer();
+    }
+
+    public void defineAll(){
         pointer1 = (ImageView) findViewById(R.id.pointerImageView1);
         pointer2 = (ImageView) findViewById(R.id.pointerImageView2);
         pointer3 = (ImageView) findViewById(R.id.pointerImageView3);
@@ -69,17 +78,14 @@ public class MainActivity extends ActionBarActivity {
         test = (TextView) findViewById(R.id.Test);
 
         num = getSharedPreferences("num", MODE_PRIVATE);
-        num_editor = num.edit();
         n_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
         d_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
-        m_sp = getSharedPreferences("m_savedata", MODE_PRIVATE);
         deadline_sp = getSharedPreferences("deadline", MODE_PRIVATE);
+        checkDefault = getSharedPreferences("checkdefault", MODE_PRIVATE);
+        num_editor = num.edit();
         n_editor = n_sp.edit();
         d_editor = d_sp.edit();
-        m_editor = m_sp.edit();
         dl_editor = deadline_sp.edit();
-
-        checkDefault = getSharedPreferences("checkdefault", MODE_PRIVATE);
         cd_ediror = checkDefault.edit();
 
         if (checkDefault.getBoolean("check", false) == false) {
@@ -100,12 +106,6 @@ public class MainActivity extends ActionBarActivity {
 
         tasknum = num.getInt("tasknum", -1);
         tasknumTextView.setText(String.valueOf(tasknum));
-        try {
-            setDeadline();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        visiblePointer();
     }
 
     public void onClick(View v) {

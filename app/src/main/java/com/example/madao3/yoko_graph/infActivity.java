@@ -20,7 +20,9 @@ import junit.framework.Test;
 
 import org.w3c.dom.Text;
 
-import java.util.HashMap;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 
 public class infActivity extends ActionBarActivity {
@@ -36,9 +38,11 @@ public class infActivity extends ActionBarActivity {
     private SharedPreferences num_sp;
     private SharedPreferences name_sp;
     private SharedPreferences date_sp;
-    private SharedPreferences deadline;
+    private SharedPreferences deadline_sp;
+    private Editor dl_editor;
 
-    HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
+    Intent intent;
+    TextView[] tasks;
 
     TextView test;
 
@@ -47,7 +51,7 @@ public class infActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inf);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         pointerNum = intent.getIntExtra("pointerNum",0);
 
         taskScroll = (ScrollView) findViewById(R.id.taskScrollView);
@@ -57,12 +61,13 @@ public class infActivity extends ActionBarActivity {
         taskScroll.addView(taskLayout);
         ll = new LinearLayout(this);
         lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,5,0,5);
+        lp.setMargins(0, 5, 0, 5);
 
         num_sp = getSharedPreferences("num", MODE_PRIVATE);
         name_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
         date_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
-        deadline = getSharedPreferences("deadline", MODE_PRIVATE);
+        deadline_sp = getSharedPreferences("deadline", MODE_PRIVATE);
+        dl_editor = deadline_sp.edit();
 
         tasknum = num_sp.getInt("tasknum", -1);
 
@@ -71,10 +76,10 @@ public class infActivity extends ActionBarActivity {
     }
 
     public void setScrollView(){
-        int num = 0;
-        TextView[] tasks = new TextView[tasknum+1];
+        int count = 0;
+        tasks = new TextView[tasknum+1];
         for(int i = 1;i<tasknum+1;i++) {
-            if(deadline.getInt(String.valueOf(i), -1) == pointerNum) {
+            if(deadline_sp.getInt(String.valueOf(i), -1) == pointerNum) {
                 String name = name_sp.getString(String.valueOf(i), "error");
                 String date = date_sp.getString(name, "error");
                 tasks[i] = new TextView(this);
@@ -85,19 +90,19 @@ public class infActivity extends ActionBarActivity {
                 tasks[i].setBackgroundColor(Color.RED);
                 tasks[i].setLayoutParams(lp);
                 tasks[i].setClickable(true);
-                map.put(tasks[i].getId(), i);
+                tasks[i].setTag(new Integer(i));
                 tasks[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int num = -1;
-                        if (map.containsKey(v.getId())) {
-                            num = map.get(v.getId());
-                        }
-                        toProperty(num);
+                        toProperty((Integer)v.getTag());
                     }
                 });
                 taskLayout.addView(tasks[i]);
+                count++;
             }
+        }
+        if(count == 0){
+            finish();
         }
     }
 
@@ -111,13 +116,48 @@ public class infActivity extends ActionBarActivity {
         }
     }
 
-    public void onClick(View v){
-        switch (v.getId()){
-            case R.id.backButton:
-                finish();
-                break;
+    public void setDeadline() throws ParseException {
+        if(tasknum == 0) return;
+        String name;
+        Date datetime = new Date();
+        Date today = new Date();
+        long date_today;
+        long oneday = 1000 * 60 * 60;
+        for(int i = 1;i <= tasknum;i++){
+            name = name_sp.getString(String.valueOf(i),"error");
+            try {
+                datetime = DateFormat.getDateInstance().parse(date_sp.getString(name,"0/0/0"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            date_today = (datetime.getTime() - today.getTime()) / oneday;
+            if(date_today <= 24) dl_editor.putInt(String.valueOf(i), 2);
+            else if(date_today > 24 && date_today <= 72) dl_editor.putInt(String.valueOf(i), 3);
+            else if(date_today > 72 && date_today <= (24*7)) dl_editor.putInt(String.valueOf(i), 4);
+            else if(date_today > (24*7) && date_today <= (24*10)) dl_editor.putInt(String.valueOf(i), 5);
+            else if(date_today > (24*10) && date_today <= (24*14)) dl_editor.putInt(String.valueOf(i), 6);
+            else if(date_today > (24*14) && date_today <= (24*21)) dl_editor.putInt(String.valueOf(i), 7);
+            else if(date_today > (24*21)) dl_editor.putInt(String.valueOf(i), 8);
+
+            dl_editor.commit();
 
         }
+    }
+
+    public void back(View v){
+                finish();
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        taskLayout.removeAllViews();
+        try {
+            setDeadline();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        setScrollView();
     }
 
     @Override

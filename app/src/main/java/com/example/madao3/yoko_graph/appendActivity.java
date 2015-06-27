@@ -17,11 +17,9 @@ public class appendActivity extends ActionBarActivity {
     private SharedPreferences num;
     private SharedPreferences n_sp;
     private SharedPreferences d_sp;
-    private SharedPreferences m_sp;
     private Editor num_editor;
     private Editor n_editor;
     private Editor d_editor;
-    private Editor m_editor;
 
     private int year;
     private int month;
@@ -29,7 +27,6 @@ public class appendActivity extends ActionBarActivity {
     private int tasknum;
     private String date;
     private String name;
-    private String memo;
 
     private DatePicker inputDate;
 
@@ -59,8 +56,6 @@ public class appendActivity extends ActionBarActivity {
                 dateofmonth = inputDate.getDayOfMonth();
                 date = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(dateofmonth);
                 name = tasknameEditText.getText().toString();
-                //memo = memoEditText.getText().toString().toString();
-                memo = "test";
                 if(d_sp.getString(name,"already") == "already") {
                     writeTasks();
                     finish();
@@ -79,10 +74,8 @@ public class appendActivity extends ActionBarActivity {
         num_editor = num.edit();
         n_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
         d_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
-        m_sp = getSharedPreferences("m_savedata", MODE_PRIVATE);
         n_editor = n_sp.edit();
         d_editor = d_sp.edit();
-        m_editor = m_sp.edit();
 
         tasknum = num.getInt("tasknum", -1);
         tasknum++;
@@ -91,10 +84,8 @@ public class appendActivity extends ActionBarActivity {
 
         n_editor.putString(String.valueOf(tasknum), name);
         d_editor.putString(name, date);
-        m_editor.putString(name, memo);
         n_editor.commit();
         d_editor.commit();
-        m_editor.commit();
     }
 
     @Override

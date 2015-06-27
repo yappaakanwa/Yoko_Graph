@@ -1,8 +1,11 @@
 package com.example.madao3.yoko_graph;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.DialogPreference;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -73,6 +76,61 @@ public class propertyActivity extends ActionBarActivity {
     public void back(View v){
         finish();
     }
+
+    public void save(View v){
+        AlertDialog.Builder notice = new AlertDialog.Builder(this)
+                .setTitle("確認！")
+                .setMessage("この設定を保存しますか？")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String year, month, day;
+                        date_editor.remove(name);
+                        name = nameEditText.getText().toString();
+                        year = yearEditText.getText().toString();
+                        month = monthEditText.getText().toString();
+                        day = dateEditText.getText().toString();
+                        num_editor.putString(String.valueOf(tasknumber), name);
+                        date_editor.putString(name, "20" + year + "/" + month + "/" + day);
+                        num_editor.commit();
+                        date_editor.commit();
+                    }
+                })
+                .setNegativeButton("キャンセル", null);
+        AlertDialog alertDialog = notice.create();
+        alertDialog.show();
+    }
+
+    public void delete(View v){
+        AlertDialog.Builder notice = new AlertDialog.Builder(this)
+                .setTitle("確認！")
+                .setMessage("このタスクを削除しますか？")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        date_editor.remove(name);
+                        date_editor.commit();
+                        for (int i = 1; i <= taskcount; i++) {
+                            if (i > tasknumber){
+                                String value = name_sp.getString(String.valueOf(i), "error");
+                                name_editor.putString(String.valueOf(i-1), value);
+                                if(i == taskcount){
+                                    name_editor.remove(String.valueOf(i));
+                                }
+                                name_editor.commit();
+                            }
+                        }
+                        taskcount--;
+                        num_editor.putInt("tasknum",taskcount);
+                        num_editor.commit();
+                        finish();
+                    }
+                })
+                .setNegativeButton("キャンセル", null);
+        AlertDialog alertDialog = notice.create();
+        alertDialog.show();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
