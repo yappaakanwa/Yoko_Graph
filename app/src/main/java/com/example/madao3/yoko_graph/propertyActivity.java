@@ -7,12 +7,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 
 public class propertyActivity extends ActionBarActivity {
 
     private int taskcount;
     private int tasknumber;
+
+    private String name;
+    private String date;
 
     private SharedPreferences num_sp;
     private SharedPreferences name_sp;
@@ -21,14 +26,52 @@ public class propertyActivity extends ActionBarActivity {
     private Editor name_editor;
     private Editor date_editor;
 
+    private EditText nameEditText;
+    private EditText yearEditText;
+    private EditText monthEditText;
+    private EditText dateEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property);
 
         Intent intent = getIntent();
-        tasknumber = intent.getIntExtra("tasknumber",-1);
+        tasknumber = intent.getIntExtra("tasknumber", -1);
 
+        num_sp = getSharedPreferences("num", MODE_PRIVATE);
+        name_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
+        date_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
+        num_editor = num_sp.edit();
+        name_editor = name_sp.edit();
+        date_editor = date_sp.edit();
+
+        taskcount = num_sp.getInt("tasknum", -1);
+        name = name_sp.getString(String.valueOf(tasknumber), "error");
+        date = date_sp.getString(name, "error");
+
+        nameEditText = (EditText) findViewById(R.id.taskNameEdit);
+        yearEditText = (EditText) findViewById(R.id.yearEditText);
+        monthEditText = (EditText) findViewById(R.id.monthEditText);
+        dateEditText = (EditText) findViewById(R.id.dateEditText);
+        setTaskINf();
+
+    }
+
+    private void setTaskINf(){
+        int year, month, day;
+        String[] dates = date.split("/",0);
+        nameEditText.setText(name);
+        year = Integer.parseInt(dates[0]) - 2000;
+        month = Integer.parseInt(dates[1]);
+        day = Integer.parseInt(dates[2]);
+        yearEditText.setText(String.valueOf(year));
+        monthEditText.setText(String.valueOf(month));
+        dateEditText.setText(String.valueOf(day));
+    }
+
+    public void back(View v){
+        finish();
     }
 
     @Override

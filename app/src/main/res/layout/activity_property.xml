@@ -43,11 +43,13 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
                 android:id="@+id/yearEditText"
-                android:layout_gravity="center"
                 android:layout_weight="1"
+                android:layout_gravity="center"
                 android:text="15"
-                android:gravity="center_horizontal" />
+                android:gravity="center_vertical|center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,7 +65,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="6"
-                android:gravity="center_horizontal" />
+                android:gravity="center_horizontal"
+                android:inputType="number" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -79,7 +82,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="29"
-                android:gravity="center_horizontal" />
+                android:gravity="center_horizontal"
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout

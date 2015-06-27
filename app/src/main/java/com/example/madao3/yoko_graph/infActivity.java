@@ -16,6 +16,10 @@ import android.view.Gravity;
 import android.graphics.Color;
 import android.widget.Toast;
 
+import junit.framework.Test;
+
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 
@@ -35,6 +39,8 @@ public class infActivity extends ActionBarActivity {
     private SharedPreferences deadline;
 
     HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
+
+    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class infActivity extends ActionBarActivity {
         tasknum = num_sp.getInt("tasknum", -1);
 
         setScrollView();
+        test = (TextView) findViewById(R.id.textView1);
     }
 
     public void setScrollView(){
