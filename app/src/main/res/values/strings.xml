@@ -6,4 +6,5 @@
     <string name="title_activity_append">appendActivity</string>
     <string name="title_activity_inf">infActivity</string>
     <string name="title_activity_property">propertyActivity</string>
+    <string name="title_activity_award">AwardActivity</string>
 </resources>

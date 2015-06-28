@@ -12,6 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 
 public class propertyActivity extends ActionBarActivity {
@@ -57,11 +62,11 @@ public class propertyActivity extends ActionBarActivity {
         yearEditText = (EditText) findViewById(R.id.yearEditText);
         monthEditText = (EditText) findViewById(R.id.monthEditText);
         dateEditText = (EditText) findViewById(R.id.dateEditText);
-        setTaskINf();
+        setTaskInf();
 
     }
 
-    private void setTaskINf(){
+    private void setTaskInf(){
         int year, month, day;
         String[] dates = date.split("/",0);
         nameEditText.setText(name);
@@ -90,6 +95,15 @@ public class propertyActivity extends ActionBarActivity {
                         year = yearEditText.getText().toString();
                         month = monthEditText.getText().toString();
                         day = dateEditText.getText().toString();
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            String value = "20" + year + "-0" + month + "-" + day;
+                            format.setLenient(false);
+                            format.parse(value);
+                        }catch (ParseException e){
+                            showErrorToast();
+                            return;
+                        }
                         num_editor.putString(String.valueOf(tasknumber), name);
                         date_editor.putString(name, "20" + year + "/" + month + "/" + day);
                         num_editor.commit();
@@ -99,6 +113,10 @@ public class propertyActivity extends ActionBarActivity {
                 .setNegativeButton("キャンセル", null);
         AlertDialog alertDialog = notice.create();
         alertDialog.show();
+    }
+
+    private void showErrorToast(){
+        Toast.makeText(this, "日にちの値が不正です",Toast.LENGTH_SHORT).show();
     }
 
     public void delete(View v){
@@ -131,6 +149,38 @@ public class propertyActivity extends ActionBarActivity {
         alertDialog.show();
     }
 
+    public void clear(View v){
+        AlertDialog.Builder notice = new AlertDialog.Builder(this)
+                .setTitle("確認！")
+                .setMessage("このタスクを完了しますか？")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        date_editor.remove(name);
+                        date_editor.commit();
+                        for (int i = 1; i <= taskcount; i++) {
+                            if (i > tasknumber){
+                                String value = name_sp.getString(String.valueOf(i), "error");
+                                name_editor.putString(String.valueOf(i-1), value);
+                                if(i == taskcount){
+                                    name_editor.remove(String.valueOf(i));
+                                }
+                                name_editor.commit();
+                            }
+                        }
+                        taskcount--;
+                        int clearNum = num_sp.getInt("clear", -1);
+                        clearNum++;
+                        num_editor.putInt("clear", clearNum);
+                        num_editor.putInt("tasknum",taskcount);
+                        num_editor.commit();
+                        finish();
+                    }
+                })
+                .setNegativeButton("キャンセル", null);
+        AlertDialog alertDialog = notice.create();
+        alertDialog.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

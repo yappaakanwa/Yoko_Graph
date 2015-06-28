@@ -87,7 +87,7 @@ public class infActivity extends ActionBarActivity {
                 tasks[i].setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 tasks[i].setGravity(Gravity.CENTER);
                 tasks[i].setPadding(0, 10, 0, 10);
-                tasks[i].setBackgroundColor(Color.RED);
+                tasks[i].setBackgroundColor(Color.WHITE);
                 tasks[i].setLayoutParams(lp);
                 tasks[i].setClickable(true);
                 tasks[i].setTag(new Integer(i));

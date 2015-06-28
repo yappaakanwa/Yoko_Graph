@@ -109,11 +109,28 @@
                 android:onClick="delete" />
         </LinearLayout>
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="この変更を保存"
-            android:id="@+id/saveButton"
-            android:onClick="save" />
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="この変更を保存"
+                android:id="@+id/saveButton"
+                android:onClick="save"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="タスク完了！"
+                android:id="@+id/clearButton"
+                android:layout_weight="1"
+                android:onClick="clear"
+                android:singleLine="false" />
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

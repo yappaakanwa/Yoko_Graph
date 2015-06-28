@@ -1,12 +1,17 @@
 package com.example.madao3.yoko_graph;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -24,6 +29,8 @@ import java.util.zip.DataFormatException;
 public class MainActivity extends ActionBarActivity {
 
     private TextView tasknumTextView;
+
+    private boolean p[] = new boolean[9];
 
     private ImageView pointer1;
     private ImageView pointer2;
@@ -47,7 +54,10 @@ public class MainActivity extends ActionBarActivity {
     private Editor dl_editor;
     private Editor cd_ediror;
 
-    TextView test;
+    private ScrollView taskScroll;
+    private LinearLayout taskLayout;
+    private LinearLayout ll;
+    private LinearLayout.LayoutParams lp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +72,10 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         visiblePointer();
+        setScrollView();
     }
 
-    public void defineAll(){
+    private void defineAll(){
         pointer1 = (ImageView) findViewById(R.id.pointerImageView1);
         pointer2 = (ImageView) findViewById(R.id.pointerImageView2);
         pointer3 = (ImageView) findViewById(R.id.pointerImageView3);
@@ -75,7 +86,6 @@ public class MainActivity extends ActionBarActivity {
         pointer8 = (ImageView) findViewById(R.id.pointerImageView8);
 
         tasknumTextView = (TextView) findViewById(R.id.taskNumTextView);
-        test = (TextView) findViewById(R.id.Test);
 
         num = getSharedPreferences("num", MODE_PRIVATE);
         n_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
@@ -98,6 +108,7 @@ public class MainActivity extends ActionBarActivity {
             pointer8.setVisibility(View.INVISIBLE);
 
             num_editor.putInt("tasknum", 0);
+            num_editor.putInt("clear", 0);
             num_editor.commit();
             Toast.makeText(this, " aa ", Toast.LENGTH_SHORT).show();
             cd_ediror.putBoolean("check", true);
@@ -106,6 +117,15 @@ public class MainActivity extends ActionBarActivity {
 
         tasknum = num.getInt("tasknum", -1);
         tasknumTextView.setText(String.valueOf(tasknum));
+
+        taskScroll = (ScrollView) findViewById(R.id.taskScrollView);
+        taskLayout = new LinearLayout(this);
+        taskLayout.setOrientation(LinearLayout.VERTICAL);
+        taskLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        taskScroll.addView(taskLayout);
+        ll = new LinearLayout(this);
+        lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 5, 0, 5);
     }
 
     public void onClick(View v) {
@@ -116,44 +136,41 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
                 break;
             case R.id.pointerImageView2:
-                test.setText("pointer2 clicked");
                 intent2.putExtra("pointerNum", 2);
                 startActivity(intent2);
                 break;
             case R.id.pointerImageView3:
-                test.setText("pointer3 clicked");
                 intent2.putExtra("pointerNum", 3);
                 startActivity(intent2);
                 break;
             case R.id.pointerImageView4:
-                test.setText("pointer4 clicked");
                 intent2.putExtra("pointerNum", 4);
                 startActivity(intent2);
                 break;
             case R.id.pointerImageView5:
-                test.setText("pointer5 clicked");
                 intent2.putExtra("pointerNum", 5);
                 startActivity(intent2);
                 break;
             case R.id.pointerImageView6:
-                test.setText("pointer6 clicked");
                 intent2.putExtra("pointerNum", 6);
                 startActivity(intent2);
                 break;
             case R.id.pointerImageView7:
-                test.setText("pointer7 clicked");
                 intent2.putExtra("pointerNum", 7);
                 startActivity(intent2);
                 break;
             case R.id.pointerImageView8:
-                test.setText("pointer8 clicked");
                 intent2.putExtra("pointerNum", 8);
                 startActivity(intent2);
+                break;
+            case R.id.awardButton:
+                Intent intent4 = new Intent(this, AwardActivity.class);
+                startActivity(intent4);
                 break;
         }
     }
 
-    public void setDeadline() throws ParseException {
+    private void setDeadline() throws ParseException {
         if(tasknum == 0) return;
         String name;
         Date datetime = new Date();
@@ -168,7 +185,6 @@ public class MainActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
             date_today = (datetime.getTime() - today.getTime()) / oneday;
-            if(name != "error") test.setText(String.valueOf(date_today));
             if(date_today <= 24) dl_editor.putInt(String.valueOf(i), 2);
             else if(date_today > 24 && date_today <= 72) dl_editor.putInt(String.valueOf(i), 3);
             else if(date_today > 72 && date_today <= (24*7)) dl_editor.putInt(String.valueOf(i), 4);
@@ -182,52 +198,92 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void visiblePointer() {
+    private void visiblePointer() {
+        checkPointer();
+        if(p[2]) pointer2.setVisibility(View.VISIBLE); else pointer2.setVisibility(View.INVISIBLE);
+        if(p[3]) pointer3.setVisibility(View.VISIBLE); else pointer3.setVisibility(View.INVISIBLE);
+        if(p[4]) pointer4.setVisibility(View.VISIBLE); else pointer4.setVisibility(View.INVISIBLE);
+        if(p[5]) pointer5.setVisibility(View.VISIBLE); else pointer5.setVisibility(View.INVISIBLE);
+        if(p[6]) pointer6.setVisibility(View.VISIBLE); else pointer6.setVisibility(View.INVISIBLE);
+        if(p[7]) pointer7.setVisibility(View.VISIBLE); else pointer7.setVisibility(View.INVISIBLE);
+        if(p[8]) pointer8.setVisibility(View.VISIBLE); else pointer8.setVisibility(View.INVISIBLE);
+    }
+
+    private void checkPointer(){
         int IVnumber;
         if(tasknum == 0) return;
-        boolean p2 = false
-                ,p3 = false
-                ,p4 = false
-                ,p5 = false
-                ,p6 = false
-                ,p7 = false
-                ,p8 = false;
+        for(int i = 0;i < 9;i++) {
+            p[i] = false;
+        }
         for(int i = 1;i <= tasknum;i++){
             IVnumber = deadline_sp.getInt(String.valueOf(i), -1);
-            test.setText(String.valueOf(IVnumber));
             switch (IVnumber){
                 case -1:
                     break;
                 case 2:
-                    p2 = true;
+                    p[2] = true;
                     break;
                 case 3:
-                    p3 = true;
+                    p[3] = true;
                     break;
                 case 4:
-                    p4 = true;
+                    p[4] = true;
                     break;
                 case 5:
-                    p5 = true;
+                    p[5] = true;
                     break;
                 case 6:
-                    p6 = true;
+                    p[6] = true;
                     break;
                 case 7:
-                    p7 = true;
+                    p[7] = true;
                     break;
                 case 8:
-                    p8 = true;
+                    p[8] = true;
                     break;
             }
         }
-        if(p2) pointer2.setVisibility(View.VISIBLE); else pointer2.setVisibility(View.INVISIBLE);
-        if(p3) pointer3.setVisibility(View.VISIBLE); else pointer3.setVisibility(View.INVISIBLE);
-        if(p4) pointer4.setVisibility(View.VISIBLE); else pointer4.setVisibility(View.INVISIBLE);
-        if(p5) pointer5.setVisibility(View.VISIBLE); else pointer5.setVisibility(View.INVISIBLE);
-        if(p6) pointer6.setVisibility(View.VISIBLE); else pointer6.setVisibility(View.INVISIBLE);
-        if(p7) pointer7.setVisibility(View.VISIBLE); else pointer7.setVisibility(View.INVISIBLE);
-        if(p8) pointer8.setVisibility(View.VISIBLE); else pointer8.setVisibility(View.INVISIBLE);
+    }
+
+    private void setScrollView(){
+        int pointerNum = 0;
+        checkPointer();
+        for(int i = 2;i < 9;i++){
+            if(p[i]){
+                pointerNum = i;
+                break;
+            }
+        }
+        if(pointerNum == 0) return;
+        TextView[] tasks = new TextView[tasknum+1];
+        for(int i = 1;i<tasknum+1;i++) {
+            if(deadline_sp.getInt(String.valueOf(i), -1) == pointerNum) {
+                String name = n_sp.getString(String.valueOf(i), "error");
+                String date = d_sp.getString(name, "error");
+                tasks[i] = new TextView(this);
+                tasks[i].setText("タスク名：" + name + "\n" + "期限：" + date);
+                tasks[i].setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                tasks[i].setGravity(Gravity.CENTER);
+                tasks[i].setPadding(0, 10, 0, 10);
+                tasks[i].setBackgroundColor(Color.WHITE);
+                tasks[i].setLayoutParams(lp);
+                tasks[i].setClickable(true);
+                tasks[i].setTag(new Integer(i));
+                tasks[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toProperty((Integer) v.getTag());
+                    }
+                });
+                taskLayout.addView(tasks[i]);
+            }
+        }
+    }
+
+    private void toProperty(int num){
+        Intent intent3 = new Intent(this, propertyActivity.class);
+        intent3.putExtra("tasknumber", num);
+        startActivity(intent3);
     }
 
     @Override
@@ -235,13 +291,14 @@ public class MainActivity extends ActionBarActivity {
         super.onRestart();
         tasknum = num.getInt("tasknum", -1);
         tasknumTextView.setText(String.valueOf(tasknum));
-        test.setText(n_sp.getString(String.valueOf(tasknum), "No Data"));
         try {
             setDeadline();
         } catch (ParseException e) {
             e.printStackTrace();
         }
         visiblePointer();
+        taskLayout.removeAllViews();
+        setScrollView();
     }
 
     @Override

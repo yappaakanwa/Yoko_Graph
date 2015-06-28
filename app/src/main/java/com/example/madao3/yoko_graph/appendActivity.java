@@ -43,7 +43,6 @@ public class appendActivity extends ActionBarActivity {
         switch (v.getId()){
             case R.id.appendButton:
                 final EditText tasknameEditText = (EditText) findViewById(R.id.taskNameEditText);
-                //final EditText memoEditText = (EditText) findViewById(R.id.memoEditText);
 
                 d_sp = getSharedPreferences("d_savedata", MODE_PRIVATE);
 
