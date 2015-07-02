@@ -343,6 +343,8 @@ public class MainActivity extends ActionBarActivity {
             num_editor.commit();
             cd_ediror.putBoolean("check", true);
             cd_ediror.commit();
+            taskLayout.removeAllViews();
+            tasknumTextView.setText(String.valueOf(0));
         }
         else {
             tasknum = num.getInt("tasknum", -1);
