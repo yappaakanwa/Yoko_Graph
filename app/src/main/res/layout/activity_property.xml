@@ -98,7 +98,9 @@
                 android:text="戻る"
                 android:id="@+id/backButton"
                 android:layout_weight="1"
-                android:onClick="back" />
+                android:onClick="back"
+                android:background="#ff2fcfff"
+                android:layout_margin="5dp" />
 
             <Button
                 android:layout_width="0dp"
@@ -106,7 +108,9 @@
                 android:text="タスクを削除"
                 android:id="@+id/deleteButton"
                 android:layout_weight="1"
-                android:onClick="delete" />
+                android:onClick="delete"
+                android:background="#ff2fcfff"
+                android:layout_margin="5dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,7 +124,9 @@
                 android:text="この変更を保存"
                 android:id="@+id/saveButton"
                 android:onClick="save"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="#ff2fcfff"
+                android:layout_margin="5dp" />
 
             <Button
                 android:layout_width="0dp"
@@ -129,7 +135,9 @@
                 android:id="@+id/clearButton"
                 android:layout_weight="1"
                 android:onClick="clear"
-                android:singleLine="false" />
+                android:singleLine="false"
+                android:background="#ff2fcfff"
+                android:layout_margin="5dp" />
         </LinearLayout>
 
     </LinearLayout>

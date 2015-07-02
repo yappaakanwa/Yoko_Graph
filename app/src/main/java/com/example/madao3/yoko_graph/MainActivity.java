@@ -1,5 +1,7 @@
 package com.example.madao3.yoko_graph;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
@@ -18,6 +20,8 @@ import android.content.SharedPreferences.Editor;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.InterruptedIOException;
 import java.lang.ref.SoftReference;
 import java.text.DateFormat;
@@ -29,6 +33,7 @@ import java.util.zip.DataFormatException;
 public class MainActivity extends ActionBarActivity {
 
     private TextView tasknumTextView;
+    private TextView textView;
 
     private boolean p[] = new boolean[9];
 
@@ -75,6 +80,7 @@ public class MainActivity extends ActionBarActivity {
         setScrollView();
     }
 
+    //宣言文
     private void defineAll(){
         pointer1 = (ImageView) findViewById(R.id.pointerImageView1);
         pointer2 = (ImageView) findViewById(R.id.pointerImageView2);
@@ -86,6 +92,8 @@ public class MainActivity extends ActionBarActivity {
         pointer8 = (ImageView) findViewById(R.id.pointerImageView8);
 
         tasknumTextView = (TextView) findViewById(R.id.taskNumTextView);
+        textView = (TextView) findViewById(R.id.taskTextView);
+
 
         num = getSharedPreferences("num", MODE_PRIVATE);
         n_sp = getSharedPreferences("n_savedata", MODE_PRIVATE);
@@ -110,7 +118,6 @@ public class MainActivity extends ActionBarActivity {
             num_editor.putInt("tasknum", 0);
             num_editor.putInt("clear", 0);
             num_editor.commit();
-            Toast.makeText(this, " aa ", Toast.LENGTH_SHORT).show();
             cd_ediror.putBoolean("check", true);
             cd_ediror.commit();
         }
@@ -128,6 +135,7 @@ public class MainActivity extends ActionBarActivity {
         lp.setMargins(0, 5, 0, 5);
     }
 
+    //クリックリスナー
     public void onClick(View v) {
         Intent intent2 = new Intent(this, infActivity.class);
         switch (v.getId()) {
@@ -170,6 +178,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    //期日までの日数によりカテゴライズ
     private void setDeadline() throws ParseException {
         if(tasknum == 0) return;
         String name;
@@ -185,19 +194,20 @@ public class MainActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
             date_today = (datetime.getTime() - today.getTime()) / oneday;
-            if(date_today <= 24) dl_editor.putInt(String.valueOf(i), 2);
+            if(date_today >= 0 && date_today <= 24) dl_editor.putInt(String.valueOf(i), 2);
             else if(date_today > 24 && date_today <= 72) dl_editor.putInt(String.valueOf(i), 3);
             else if(date_today > 72 && date_today <= (24*7)) dl_editor.putInt(String.valueOf(i), 4);
             else if(date_today > (24*7) && date_today <= (24*10)) dl_editor.putInt(String.valueOf(i), 5);
             else if(date_today > (24*10) && date_today <= (24*14)) dl_editor.putInt(String.valueOf(i), 6);
             else if(date_today > (24*14) && date_today <= (24*21)) dl_editor.putInt(String.valueOf(i), 7);
             else if(date_today > (24*21)) dl_editor.putInt(String.valueOf(i), 8);
-
+            else if(date_today < 0) dl_editor.putInt(String.valueOf(i), -1);
             dl_editor.commit();
 
         }
     }
 
+    //近傍の予定があるかどうかでポインターを表示するか決めている。
     private void visiblePointer() {
         checkPointer();
         if(p[2]) pointer2.setVisibility(View.VISIBLE); else pointer2.setVisibility(View.INVISIBLE);
@@ -209,16 +219,44 @@ public class MainActivity extends ActionBarActivity {
         if(p[8]) pointer8.setVisibility(View.VISIBLE); else pointer8.setVisibility(View.INVISIBLE);
     }
 
+    //期日を過ぎたタスクを削除
+    public void delete(int n) {
+        d_editor.remove(n_sp.getString(String.valueOf(n), "error"));
+        d_editor.commit();
+        if (tasknum == 1) {
+            n_editor.remove(String.valueOf(tasknum));
+            dl_editor.clear();
+            dl_editor.commit();
+            n_editor.commit();
+        } else {
+            for (int i = 1; i <= tasknum; i++) {
+                if (i > n) {
+                    String value = n_sp.getString(String.valueOf(i), "error");
+                    n_editor.putString(String.valueOf(i - 1), value);
+                    if (i == tasknum) {
+                        n_editor.remove(String.valueOf(i));
+                    }
+                    n_editor.commit();
+                }
+            }
+        }
+        tasknum--;
+        num_editor.putInt("tasknum", tasknum);
+        num_editor.commit();
+    }
+
+    //デッドラインからポインターを表示する位置を指定
     private void checkPointer(){
         int IVnumber;
-        if(tasknum == 0) return;
         for(int i = 0;i < 9;i++) {
             p[i] = false;
         }
+        if(tasknum == 0) return;
         for(int i = 1;i <= tasknum;i++){
             IVnumber = deadline_sp.getInt(String.valueOf(i), -1);
             switch (IVnumber){
                 case -1:
+                    delete(i);
                     break;
                 case 2:
                     p[2] = true;
@@ -245,6 +283,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    //真ん中のスクロールビューを表示
     private void setScrollView(){
         int pointerNum = 0;
         checkPointer();
@@ -280,6 +319,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    //プロパティ画面への遷移
     private void toProperty(int num){
         Intent intent3 = new Intent(this, propertyActivity.class);
         intent3.putExtra("tasknumber", num);
@@ -289,16 +329,33 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        tasknum = num.getInt("tasknum", -1);
-        tasknumTextView.setText(String.valueOf(tasknum));
-        try {
-            setDeadline();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (checkDefault.getBoolean("check", false) == false) {
+            pointer2.setVisibility(View.INVISIBLE);
+            pointer3.setVisibility(View.INVISIBLE);
+            pointer4.setVisibility(View.INVISIBLE);
+            pointer5.setVisibility(View.INVISIBLE);
+            pointer6.setVisibility(View.INVISIBLE);
+            pointer7.setVisibility(View.INVISIBLE);
+            pointer8.setVisibility(View.INVISIBLE);
+
+            num_editor.putInt("tasknum", 0);
+            num_editor.putInt("clear", 0);
+            num_editor.commit();
+            cd_ediror.putBoolean("check", true);
+            cd_ediror.commit();
         }
-        visiblePointer();
-        taskLayout.removeAllViews();
-        setScrollView();
+        else {
+            tasknum = num.getInt("tasknum", -1);
+            tasknumTextView.setText(String.valueOf(tasknum));
+            try {
+                setDeadline();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            visiblePointer();
+            taskLayout.removeAllViews();
+            setScrollView();
+        }
     }
 
     @Override

@@ -40,6 +40,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:onClick="back" />
+            android:onClick="back"
+            android:background="#ff2fcfff" />
     </LinearLayout>
 </RelativeLayout>

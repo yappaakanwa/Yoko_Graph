@@ -28,7 +28,7 @@
             android:layout_height="0dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_weight="3">
+            android:layout_weight="2">
 
             <ImageView
                 android:layout_width="0dp"
@@ -46,7 +46,38 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:textSize="40dp"
-                android:gravity="center_vertical|center_horizontal" />
+                android:gravity="center_vertical|center_horizontal"
+                android:background="#ffffffff"
+                android:layout_margin="5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/deleteButton"
+                android:background="@drawable/bakudan"
+                android:layout_weight="1"
+                android:onClick="bomb" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="←これまでのタスク\nとデータをすべて\n消去する"
+                android:id="@+id/textView4"
+                android:layout_weight="1.5"
+                android:textSize="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="#ffff0400"
+                android:layout_margin="10dp"
+                android:paddingTop="10dp" />
         </LinearLayout>
 
         <Button
@@ -54,7 +85,9 @@
             android:layout_height="wrap_content"
             android:text="戻る"
             android:id="@+id/backButton"
-            android:onClick="back" />
+            android:onClick="back"
+            android:background="#ff2fcfff"
+            android:layout_margin="5dp" />
 
     </LinearLayout>
 

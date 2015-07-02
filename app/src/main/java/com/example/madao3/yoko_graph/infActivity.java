@@ -75,6 +75,7 @@ public class infActivity extends ActionBarActivity {
         test = (TextView) findViewById(R.id.textView1);
     }
 
+    //タスク一覧を表示
     public void setScrollView(){
         int count = 0;
         tasks = new TextView[tasknum+1];
@@ -106,6 +107,7 @@ public class infActivity extends ActionBarActivity {
         }
     }
 
+    //プロパティアクティビティへの遷移
     public void toProperty(int num){
         if(num != -1) {
             Intent intent3 = new Intent(this, propertyActivity.class);
@@ -116,6 +118,7 @@ public class infActivity extends ActionBarActivity {
         }
     }
 
+    //デッドラインを
     public void setDeadline() throws ParseException {
         if(tasknum == 0) return;
         String name;
@@ -144,6 +147,7 @@ public class infActivity extends ActionBarActivity {
         }
     }
 
+    //戻るボタン
     public void back(View v){
                 finish();
     }
@@ -151,6 +155,7 @@ public class infActivity extends ActionBarActivity {
     @Override
     protected void onRestart(){
         super.onRestart();
+        tasknum = num_sp.getInt("tasknum",-1);
         taskLayout.removeAllViews();
         try {
             setDeadline();

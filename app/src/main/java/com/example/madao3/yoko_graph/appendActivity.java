@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+
 
 public class appendActivity extends ActionBarActivity {
 
@@ -39,7 +43,7 @@ public class appendActivity extends ActionBarActivity {
         inputDate = (DatePicker) findViewById(R.id.inputdatePicker);
     }
 
-    public void onClick(View v) {
+    public void onClick(View v) throws ParseException {
         switch (v.getId()){
             case R.id.appendButton:
                 final EditText tasknameEditText = (EditText) findViewById(R.id.taskNameEditText);
@@ -56,8 +60,12 @@ public class appendActivity extends ActionBarActivity {
                 date = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(dateofmonth);
                 name = tasknameEditText.getText().toString();
                 if(d_sp.getString(name,"already") == "already") {
-                    writeTasks();
-                    finish();
+                    if(/*checkDate()*/true) {
+                        writeTasks();
+                        finish();
+                    }else{
+                        Toast.makeText(this,"過去の日時です",Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(this, "既に登録されているタスクです",Toast.LENGTH_SHORT).show();
                 }
@@ -68,6 +76,7 @@ public class appendActivity extends ActionBarActivity {
         }
     }
 
+    //タスクをSharedPreferencesに書き込む
     public void writeTasks(){
         num = getSharedPreferences("num", MODE_PRIVATE);
         num_editor = num.edit();
@@ -85,6 +94,19 @@ public class appendActivity extends ActionBarActivity {
         d_editor.putString(name, date);
         n_editor.commit();
         d_editor.commit();
+    }
+
+    //不正な日時でないかチェック
+    private boolean checkDate() throws ParseException {
+        Date datetime = new Date();
+        Date today = new Date();
+
+        datetime = DateFormat.getDateInstance().parse(date);
+        if((datetime.getTime() - today.getTime()) < 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override

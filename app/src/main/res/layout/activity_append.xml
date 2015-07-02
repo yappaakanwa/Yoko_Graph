@@ -58,7 +58,8 @@
                 android:clickable="true"
                 android:onClick="onClick"
                 android:layout_weight="1"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:background="#ff2fcfff" />
 
             <Button
                 android:layout_width="0dp"
@@ -67,7 +68,8 @@
                 android:id="@+id/cancelButton"
                 android:layout_weight="1"
                 android:layout_marginLeft="5dp"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:background="#ff2fcfff" />
         </LinearLayout>
 
     </LinearLayout>
